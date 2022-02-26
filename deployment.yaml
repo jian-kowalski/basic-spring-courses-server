@@ -1,59 +1,36 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: basic-server-service
+spec:
+  selector:
+    app: basicSpring
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: basic-spring-server
-#  namespace: spring
+  name: basic-server
   labels:
-    app: springapi
+    app: basicSpring
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      app: springapi
+      app: basicSpring
   template:
     metadata:
       labels:
-        app: springapi
+        app: basicSpring
     spec:
       imagePullSecrets:
         - name: pipeline-docker-registry
       containers:
-        - name: springapi
+        - name: maven
           image: ${CICD_IMAGE}:${CICD_EXECUTION_SEQUENCE}
           ports:
-            - containerPort: 5000
-
----
-kind: Service
-apiVersion: v1
-metadata:
-  name: basic-spring-service
-#  namespace: spring
-spec:
-  selector:
-    app: springapi
-  type: ClusterIP
-  ports:
-    - protocol: TCP
-      port: 5000
-      targetPort: 5000
-
-
----
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-#  namespace: spring
-  name: basic-spring-ingress
-  annotations:
-    allow.http: "false"
-spec:
-  rules:
-    - host: spring.rancher.jiankowalski.com
-      http:
-        paths:
-          - path: /
-            backend:
-              serviceName: basic-spring-service
-              servicePort: 5000
+            - containerPort: 8080
