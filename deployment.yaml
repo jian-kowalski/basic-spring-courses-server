@@ -1,36 +1,68 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: basic-server-service
+  name: example-spring-service
+  namespace: default
 spec:
   selector:
-    app: basicSpring
+    app: example-spring
   type: NodePort
   ports:
     - protocol: TCP
-      port: 8080
+      port: 18080
       targetPort: 8080
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: basic-server
+  name: example-spring-deployment
+  namespace: default
   labels:
-    app: basicSpring
+    app: example-spring
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: basicSpring
+      app: example-spring
   template:
     metadata:
       labels:
-        app: basicSpring
+        app: example-spring
     spec:
       imagePullSecrets:
-        - name: pipeline-docker-registry
+        #      - name: pipeline-docker-registry
+        - name: docker-registry
+      initContainers:
+        #      - image: ${CICD_IMAGE}:${CICD_EXECUTION_SEQUENCE}
+        - image: ${CICD_IMAGE}:${CICD_GIT_BRANCH}
+          name: jar
+          command: ["cp", "/app.jar", "/app"]
+          volumeMounts:
+            - mountPath: /app
+              name: app-vol
       containers:
-        - name: maven
-          image: ${CICD_IMAGE}:${CICD_EXECUTION_SEQUENCE}
+        - image: openjdk:8-alpine
+          name: example-spring
+          command: ["java", "-jar", "/app/app.jar"]
+          volumeMounts:
+            - mountPath: /app
+              name: app-vol
           ports:
             - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 1
+            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 1
+            periodSeconds: 3
+      volumes:
+        - name: app-vol
+          emptyDir: {}
