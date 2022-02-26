@@ -2,7 +2,7 @@ stages:
   - name: Build
     steps:
       - runScriptConfig:
-        - image: maven:3.8.1-openjdk-11
+          image: maven:3.8.1-openjdk-11
           shellScript: |-
             mvn clean install -DspkipTests
   - name: Publish
@@ -10,11 +10,8 @@ stages:
       - publishImageConfig:
           dockerfilePath: ./Dockerfile
           buildContext: .
-          #        tag: fullj/pipeline-example-spring:${CICD_EXECUTION_SEQUENCE}
-          tag: jianrk/pipeline-example-spring:${CICD_GIT_BRANCH}
+          tag: basic-spring-server:${CICD_EXECUTION_SEQUENCE}
   - name: Deploy
     steps:
       - applyYamlConfig:
-          path: ./deployment.yml
-
-timeout: 6
+          path: ./deployment.yaml
