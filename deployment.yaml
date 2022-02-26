@@ -1,68 +1,33 @@
-kind: Service
-apiVersion: v1
-metadata:
-  name: example-spring-service
-  namespace: default
+apiVersion: v1 # Kubernetes API version
+kind: Service # Kubernetes resource kind we are creating
+metadata: # Metadata of the resource kind we are creating
+  name: spring-basic-service
 spec:
   selector:
-    app: example-spring
-  type: NodePort
+    app: spring-test-app
   ports:
-    - protocol: TCP
-      port: 18080
-      targetPort: 8080
+    - protocol: "TCP"
+      port: 8080 # The port that the service is running on in the cluster
+      targetPort: 8080 # The port exposed by the service
+  type: LoadBalancer # type of the service. LoadBalancer indicates that our service will be external.
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: Deployment # Kubernetes resource kind we are creating
 metadata:
-  name: example-spring-deployment
-  namespace: default
-  labels:
-    app: example-spring
+  name: spring-basic-app
 spec:
-  replicas: 1
   selector:
     matchLabels:
-      app: example-spring
+      app: spring-basic-app
+  replicas: 2 # Number of replicas that will be created for this deployment
   template:
     metadata:
       labels:
-        app: example-spring
+        app: spring-test-app
     spec:
-      imagePullSecrets:
-        #      - name: pipeline-docker-registry
-        - name: docker-registry
-      initContainers:
-        #      - image: ${CICD_IMAGE}:${CICD_EXECUTION_SEQUENCE}
-        - image: ${CICD_IMAGE}:${CICD_GIT_BRANCH}
-          name: jar
-          command: ["cp", "/app.jar", "/app"]
-          volumeMounts:
-            - mountPath: /app
-              name: app-vol
       containers:
-        - image: openjdk:8-alpine
-          name: example-spring
-          command: ["java", "-jar", "/app/app.jar"]
-          volumeMounts:
-            - mountPath: /app
-              name: app-vol
+        - name: spring-basic-app
+          image: spring-basic-test # Image that will be used to containers in the cluster
+          imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 8080
-          livenessProbe:
-            httpGet:
-              path: /actuator/health
-              port: 8080
-              scheme: HTTP
-            initialDelaySeconds: 1
-            periodSeconds: 3
-          readinessProbe:
-            httpGet:
-              path: /actuator/health
-              port: 8080
-              scheme: HTTP
-            initialDelaySeconds: 1
-            periodSeconds: 3
-      volumes:
-        - name: app-vol
-          emptyDir: {}
+            - containerPort: 8080 # The port that the container is running on in the cluster
