@@ -1,36 +1,46 @@
-apiVersion: v1 # Kubernetes API version
-kind: Service # Kubernetes resource kind we are creating
-metadata: # Metadata of the resource kind we are creating
-  name: spring-basic-service
-spec:
-  selector:
-    app: spring-basic-app
-  ports:
-    - protocol: "TCP"
-      port: 8080 # The port that the service is running on in the cluster
-      targetPort: 8080 # The port exposed by the service
-  type: ClusterIP
+
 ---
 apiVersion: apps/v1
-kind: Deployment # Kubernetes resource kind we are creating
+kind: Deployment
 metadata:
-  name: spring-basic-app
+  name: spring-server
+  #namespace: spring
+  labels:
+    app: springapi
 spec:
+  replicas: 3
   selector:
     matchLabels:
-      app: spring-basic-app
-  replicas: 2 # Number of replicas that will be created for this deployment
+      app: springapi
   template:
     metadata:
       labels:
-        app: spring-basic-app
+        app: springapi
     spec:
+      imagePullSecrets:
+        - name: pipeline-docker-registry
       containers:
-        - name: spring-basic-app
-          image: basic-spring-server # Image that will be used to containers in the cluster
-          imagePullPolicy: IfNotPresent
+        - name: springapi
+          image: ${CICD_IMAGE}:${CICD_EXECUTION_SEQUENCE}
           ports:
-            - containerPort: 8080 # The port that the container is running on in the cluster
+            - containerPort: 8080
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: spring-service
+  #namespace: spring
+spec:
+  selector:
+    app: springapi
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+
+
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
@@ -41,10 +51,10 @@ metadata:
     allow.http: "false"
 spec:
   rules:
-    - host: api.rancher.jiankowalski.com
+    - host: spring.rancher.jiankowalski.com
       http:
         paths:
           - path: /
             backend:
-              serviceName: spring-basic-service
+              serviceName: spring-service
               servicePort: 8080
