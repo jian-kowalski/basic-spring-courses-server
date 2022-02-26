@@ -31,3 +31,20 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080 # The port that the container is running on in the cluster
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  #namespace: go
+  name: spring-ingress
+  annotations:
+    allow.http: "false"
+spec:
+  rules:
+    - host: api.rancher.jiankowalski.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: spring-basic-service
+              servicePort: 8080
