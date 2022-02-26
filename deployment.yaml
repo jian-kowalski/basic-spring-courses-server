@@ -4,7 +4,7 @@ metadata: # Metadata of the resource kind we are creating
   name: spring-basic-service
 spec:
   selector:
-    app: spring-test-app
+    app: spring-basic-app
   ports:
     - protocol: "TCP"
       port: 8080 # The port that the service is running on in the cluster
@@ -23,11 +23,11 @@ spec:
   template:
     metadata:
       labels:
-        app: spring-test-app
+        app: spring-basic-app
     spec:
       containers:
         - name: spring-basic-app
-          image: spring-basic-test # Image that will be used to containers in the cluster
+          image: basic-spring-server # Image that will be used to containers in the cluster
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080 # The port that the container is running on in the cluster
