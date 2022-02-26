@@ -3,11 +3,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: basic-spring-server
-  #namespace: java
+#  namespace: spring
   labels:
     app: springapi
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: springapi
@@ -29,7 +29,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: basic-spring-service
-  #namespace: go
+#  namespace: spring
 spec:
   selector:
     app: springapi
@@ -44,7 +44,7 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  #namespace: go
+#  namespace: spring
   name: basic-spring-ingress
   annotations:
     allow.http: "false"
