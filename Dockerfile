@@ -6,5 +6,5 @@ RUN mvn clean install
 
 FROM  openjdk:17-alpine
 RUN mkdir /app
-COPY --from=build /src/target/*jar /app/app.jar
+COPY --from=build /src/target/*.jar /app/app.jar
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]
