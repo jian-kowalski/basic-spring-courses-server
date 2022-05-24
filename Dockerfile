@@ -1,6 +1,10 @@
-FROM adoptopenjdk/openjdk11:jdk-11.0.2.9-slim
-WORKDIR /opt
-ENV PORT 8080
-EXPOSE 8080
-COPY target/*.jar /opt/app.jar
-ENTRYPOINT exec java $JAVA_OPTS -jar app.jar
+FROM maven:3.8.5-openjdk-17-slim
+RUN mkdir /src
+COPY . /src
+WORKDIR /src
+RUN mvn clean install
+
+FROM  openjdk:17-alpine
+RUN mkdir /app
+COPY --from=build /src/target/*jar /app/app.jar
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
