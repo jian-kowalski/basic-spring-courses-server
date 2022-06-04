@@ -63,15 +63,15 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
             String name = objectError.getObjectName();
 
-            if (objectError instanceof FieldError) {
-                name = ((FieldError) objectError).getField();
+            if (objectError instanceof FieldError error) {
+                name = error.getField();
             }
             ModelObject problem = new ModelObject();
             problem.setName(name);
             problem.setUserMessage(message);
             return problem;
 
-        }).collect(Collectors.toList());
+        }).toList();
 
         Problem problem = createProblem(status, problemType, detail, detail, problemObjects);
         return handleExceptionInternal(ex, problem, headers, status, request);
@@ -103,8 +103,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex, HttpHeaders headers, HttpStatus status,
                                                         WebRequest request) {
 
-        if (ex instanceof MethodArgumentTypeMismatchException) {
-            return handleMethodArgumentTypeMismatch((MethodArgumentTypeMismatchException) ex, headers, status, request);
+        if (ex instanceof MethodArgumentTypeMismatchException error) {
+            return handleMethodArgumentTypeMismatch(error, headers, status, request);
         }
 
         return super.handleTypeMismatch(ex, headers, status, request);
@@ -126,21 +126,20 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
 
     private String getSimpleName(MethodArgumentTypeMismatchException ex) {
-        Class<?> requiredType = ex.getRequiredType();
-        if ((requiredType != null) && (requiredType.getSimpleName() != null))
-            return "";
-        return "";
+        var req =  ex.getRequiredType() == null ? null : ex.getRequiredType();
+        return  req != null ? req.getSimpleName() : "";
     }
+
 
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers,
                                                                   HttpStatus status, WebRequest request) {
         Throwable rootCause = ExceptionUtils.getRootCause(ex);
 
-        if (rootCause instanceof InvalidFormatException) {
-            return handleInvalidFormat((InvalidFormatException) rootCause, headers, status, request);
-        } else if (rootCause instanceof PropertyBindingException) {
-            return handlePropertyBinding((PropertyBindingException) rootCause, headers, status, request);
+        if (rootCause instanceof InvalidFormatException cause) {
+            return handleInvalidFormat(cause, headers, status, request);
+        } else if (rootCause instanceof PropertyBindingException cause) {
+            return handlePropertyBinding(cause, headers, status, request);
         }
 
         ProblemType problemType = ProblemType.MENSAGEM_INCOMPREENSIVEL;
@@ -218,8 +217,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         if (body == null) {
 
             body = createProblem(status, status.getReasonPhrase());
-        } else if (body instanceof String) {
-            body = createProblem(status, (String) body);
+        } else if (body instanceof String s) {
+            body = createProblem(status, s);
         }
 
         return super.handleExceptionInternal(ex, body, headers, status, request);

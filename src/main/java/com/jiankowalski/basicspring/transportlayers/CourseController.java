@@ -14,38 +14,35 @@ import java.util.List;
 @RestController
 public class CourseController implements CoursesApi {
 
-    private final CourseService courseService;
-    private final CourseMapper courseMapper;
+  private final CourseService courseService;
+  private final CourseMapper courseMapper;
 
-    public CourseController(CourseService courseService) {
-        this.courseService = courseService;
-        this.courseMapper = CourseMapper.INSTANCE;
-    }
+  public CourseController(CourseService courseService) {
+    this.courseService = courseService;
+    this.courseMapper = CourseMapper.INSTANCE;
+  }
 
-    @Override
-    public ResponseEntity<CourseModel> addCourse(CourseInput courseInput) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(
-                courseMapper.courseToCourseModel(courseService.createCourse(courseMapper.courseInputToCourse(courseInput)))
-        );
-    }
+  @Override
+  public ResponseEntity<CourseModel> addCourse(CourseInput courseInput) {
+    return ResponseEntity.status(HttpStatus.CREATED)
+        .body(
+            courseMapper.courseToCourseModel(
+                courseService.createCourse(courseMapper.courseInputToCourse(courseInput))));
+  }
 
-    @Override
-    public ResponseEntity<Void> deleteCourse(Long id) {
-        courseService.deleteCourse(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
+  @Override
+  public ResponseEntity<Void> deleteCourse(Long id) {
+    courseService.deleteCourse(id);
+    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+  }
 
-    @Override
-    public ResponseEntity<CourseModel> findCourseById(Long id) {
-        return ResponseEntity.ok(courseMapper.courseToCourseModel(courseService.getCourse(id)));
-    }
+  @Override
+  public ResponseEntity<CourseModel> findCourseById(Long id) {
+    return ResponseEntity.ok(courseMapper.courseToCourseModel(courseService.getCourse(id)));
+  }
 
-    @Override
-    public ResponseEntity<List<CourseModel>> findcourses() {
-        return ResponseEntity.ok(
-                courseMapper.coursesToCourseModels(courseService.getAllCourses())
-        );
-    }
-
-
+  @Override
+  public ResponseEntity<List<CourseModel>> findcourses() {
+    return ResponseEntity.ok(courseMapper.coursesToCourseModels(courseService.getAllCourses()));
+  }
 }

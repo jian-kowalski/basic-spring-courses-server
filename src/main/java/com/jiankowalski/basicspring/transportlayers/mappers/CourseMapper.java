@@ -11,12 +11,11 @@ import java.util.List;
 @Mapper
 public interface CourseMapper {
 
-    CourseMapper INSTANCE = Mappers.getMapper(CourseMapper.class);
+  CourseMapper INSTANCE = Mappers.getMapper(CourseMapper.class);
 
-    Course courseInputToCourse(CourseInput newCouse);
+  Course courseInputToCourse(CourseInput newCouse);
 
-    CourseModel courseToCourseModel(Course course);
+  CourseModel courseToCourseModel(Course course);
 
-    List<CourseModel> coursesToCourseModels(List<Course> pets);
-
+  List<CourseModel> coursesToCourseModels(List<Course> pets);
 }

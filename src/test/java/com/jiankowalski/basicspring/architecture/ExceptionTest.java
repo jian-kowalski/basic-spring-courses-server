@@ -10,9 +10,7 @@ import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 @AnalyzeClasses(packages = "com.jiankowalski.basicspring")
 public class ExceptionTest {
 
-    @ArchTest
-    static ArchRule naoDeveLancarExceptionGenerica = noClasses()
-            .should(GeneralCodingRules.THROW_GENERIC_EXCEPTIONS);
-
-
+  @ArchTest
+  static ArchRule naoDeveLancarExceptionGenerica =
+      noClasses().should(GeneralCodingRules.THROW_GENERIC_EXCEPTIONS);
 }

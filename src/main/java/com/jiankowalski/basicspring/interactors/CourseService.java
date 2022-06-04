@@ -9,25 +9,25 @@ import java.util.List;
 @Service
 public class CourseService {
 
-    private final CourseDatasource courseDatasource;
+  private final CourseDatasource courseDatasource;
 
-    public CourseService(CourseDatasource petDatasource) {
-        this.courseDatasource = petDatasource;
-    }
+  public CourseService(CourseDatasource petDatasource) {
+    this.courseDatasource = petDatasource;
+  }
 
-    public Course createCourse(Course pet) {
-        return courseDatasource.saveCourse(pet);
-    }
+  public Course createCourse(Course pet) {
+    return courseDatasource.saveCourse(pet);
+  }
 
-    public Course getCourse(Long id) {
-        return courseDatasource.findCourse(id);
-    }
+  public Course getCourse(Long id) {
+    return courseDatasource.findCourse(id);
+  }
 
-    public List<Course> getAllCourses() {
-        return courseDatasource.findAllCourses();
-    }
+  public List<Course> getAllCourses() {
+    return courseDatasource.findAllCourses();
+  }
 
-    public void deleteCourse(Long id) {
-        courseDatasource.deleteCourse(id);
-    }
+  public void deleteCourse(Long id) {
+    courseDatasource.deleteCourse(id);
+  }
 }

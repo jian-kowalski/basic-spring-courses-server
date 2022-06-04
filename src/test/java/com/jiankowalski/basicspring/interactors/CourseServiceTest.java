@@ -11,7 +11,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -20,42 +20,43 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 @ContextConfiguration(classes = {CourseService.class})
 class CourseServiceTest {
 
-    @Autowired
-    private CourseService courseService;
+  @Autowired private CourseService courseService;
 
-    @MockBean
-    private CourseDatasource courseDatasource;
+  @MockBean private CourseDatasource courseDatasource;
 
-    @Test
-    void createCourse() {
-        Mockito.when(courseDatasource.saveCourse(Mockito.any(Course.class))).thenReturn(CourseFactory.criarCourseValido());
-        Course course = courseService.createCourse(CourseFactory.criarCourseValido());
-        assertThat(course.getName()).isEqualTo("Angular");
-    }
+  @Test
+  void createCourse() {
+    Mockito.when(courseDatasource.saveCourse(Mockito.any(Course.class)))
+        .thenReturn(CourseFactory.criarCourseValido());
+    Course course = courseService.createCourse(CourseFactory.criarCourseValido());
+    assertThat(course.getName()).isEqualTo("Angular");
+  }
 
-    @Test
-    void getCourse() {
-        Mockito.when(courseDatasource.findCourse(Mockito.any(Long.class))).thenReturn(CourseFactory.criarCourseValido());
-        Course course = courseService.getCourse(1L);
-        assertThat(course.getName()).isEqualTo("Angular");
-    }
+  @Test
+  void getCourse() {
+    Mockito.when(courseDatasource.findCourse(Mockito.any(Long.class)))
+        .thenReturn(CourseFactory.criarCourseValido());
+    Course course = courseService.getCourse(1L);
+    assertThat(course.getName()).isEqualTo("Angular");
+  }
 
-    @Test
-    void getAllCourses() {
-        Mockito.when(courseDatasource.findAllCourses()).thenReturn(Arrays.asList(CourseFactory.criarCourseValido()));
-        assertThat(courseService.getAllCourses()).satisfies(courses -> {
-            assertThat(courses.size()).isEqualTo(1);
-            assertThat(courses.get(0).getName()).isEqualTo("Angular");
-        });
-    }
+  @Test
+  void getAllCourses() {
+    Mockito.when(courseDatasource.findAllCourses())
+        .thenReturn(List.of(CourseFactory.criarCourseValido()));
+    assertThat(courseService.getAllCourses())
+        .satisfies(
+            courses -> {
+              assertThat(courses).hasSize(1);
+              assertThat(courses.get(0).getName()).isEqualTo("Angular");
+            });
+  }
 
-    @Test
-    void deleteCourse() {
-        Mockito.when(courseDatasource.findCourse(Mockito.any(Long.class))).thenReturn(CourseFactory.criarCourseValido());
-        Course courses = courseService.getCourse(1L);
-        assertDoesNotThrow(() -> {
-            courseService.deleteCourse(courses.getId());
-        });
-
-    }
+  @Test
+  void deleteCourse() {
+    Mockito.when(courseDatasource.findCourse(Mockito.any(Long.class)))
+        .thenReturn(CourseFactory.criarCourseValido());
+    Course courses = courseService.getCourse(1L);
+    assertDoesNotThrow(() -> courseService.deleteCourse(courses.getId()));
+  }
 }

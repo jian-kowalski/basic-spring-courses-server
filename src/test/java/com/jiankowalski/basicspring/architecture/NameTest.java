@@ -14,27 +14,39 @@ import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 @AnalyzeClasses(packages = "com.jiankowalski.basicspring")
 public class NameTest {
 
-    @ArchTest
-    static final ArchRule classesAnotadasComEntityDeveTerSufixoEntity = classes()
-            .that().areAnnotatedWith(Entity.class)
-            .should().haveSimpleNameEndingWith("Entity")
-            .as("Classes anotadas com @Entity deve o sufixo Entity ");
+  @ArchTest
+  static final ArchRule classesAnotadasComEntityDeveTerSufixoEntity =
+      classes()
+          .that()
+          .areAnnotatedWith(Entity.class)
+          .should()
+          .haveSimpleNameEndingWith("Entity")
+          .as("Classes anotadas com @Entity deve o sufixo Entity ");
 
-    @ArchTest
-    static final ArchRule classesAnotadasComRepositoryDeveFicarNoPacoteEnties = classes()
-            .that().areAnnotatedWith(Repository.class)
-            .should().haveSimpleNameEndingWith("Repository")
-            .as("Classes anotadas com @Entity deve o sufixo repository ");
+  @ArchTest
+  static final ArchRule classesAnotadasComRepositoryDeveFicarNoPacoteEnties =
+      classes()
+          .that()
+          .areAnnotatedWith(Repository.class)
+          .should()
+          .haveSimpleNameEndingWith("Repository")
+          .as("Classes anotadas com @Entity deve o sufixo repository ");
 
-    @ArchTest
-    static final ArchRule classesAnotadasComServiceDeveFicarNoPacoteEnties = classes()
-            .that().areAnnotatedWith(Service.class)
-            .should().haveSimpleNameEndingWith("Service")
-            .as("Classes anotadas com @Entity deve o sufixo Service ");
+  @ArchTest
+  static final ArchRule classesAnotadasComServiceDeveFicarNoPacoteEnties =
+      classes()
+          .that()
+          .areAnnotatedWith(Service.class)
+          .should()
+          .haveSimpleNameEndingWith("Service")
+          .as("Classes anotadas com @Entity deve o sufixo Service ");
 
-    @ArchTest
-    static final ArchRule classesAnotadasComRestControllerDeveFicarNoPacoteEnties = classes()
-            .that().areAnnotatedWith(RestController.class)
-            .should().haveSimpleNameEndingWith("Controller")
-            .as("Classes anotadas com @Entity deve o sufixo Controller ");
+  @ArchTest
+  static final ArchRule classesAnotadasComRestControllerDeveFicarNoPacoteEnties =
+      classes()
+          .that()
+          .areAnnotatedWith(RestController.class)
+          .should()
+          .haveSimpleNameEndingWith("Controller")
+          .as("Classes anotadas com @Entity deve o sufixo Controller ");
 }

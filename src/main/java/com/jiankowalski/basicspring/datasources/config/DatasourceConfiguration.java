@@ -13,14 +13,13 @@ import javax.sql.DataSource;
 @Profile("PRD")
 public class DatasourceConfiguration {
 
-    @Bean
-    public DataSource dataSource() {
-        return DataSourceBuilder
-                .create()
-                .driverClassName("com.mysql.cj.jdbc.Driver")
-                .url("jdbc:mysql://127.0.0.1:3306/courses")
-                .username("courses")
-                .password("courses")
-                .build();
-    }
+  @Bean
+  public DataSource dataSource() {
+    return DataSourceBuilder.create()
+        .driverClassName("com.mysql.cj.jdbc.Driver")
+        .url("jdbc:mysql://127.0.0.1:3306/courses")
+        .username("courses")
+        .password("courses")
+        .build();
+  }
 }

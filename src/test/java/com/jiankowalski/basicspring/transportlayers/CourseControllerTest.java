@@ -19,61 +19,68 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(CourseController.class)
 class CourseControllerTest {
 
-    private final String END_POINT_COURSE = "/courses";
-    private final String END_POINT_COURSE_ID = END_POINT_COURSE + "/{id}";
+  private final String END_POINT_COURSE = "/courses";
+  private final String END_POINT_COURSE_ID = END_POINT_COURSE + "/{id}";
 
-    @Autowired
-    private MockMvc mockMvc;
+  @Autowired private MockMvc mockMvc;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+  @Autowired private ObjectMapper objectMapper;
 
-    @MockBean
-    private CourseService courseService;
+  @MockBean private CourseService courseService;
 
-    @Test
-    void deveRetornar201AoCriarComSucesso() throws Exception {
-        CourseInput courseInput = CourseFactory.criarCourseInputValido();
-        mockMvc.perform(MockMvcRequestBuilders.post(END_POINT_COURSE)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(courseInput))
-                        .accept(MediaType.APPLICATION_JSON)
-                )
-                .andExpect(status().isCreated());
-    }
+  @Test
+  void deveRetornar201AoCriarComSucesso() throws Exception {
+    CourseInput courseInput = CourseFactory.criarCourseInputValido();
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.post(END_POINT_COURSE)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(courseInput))
+                .accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().isCreated());
+  }
 
-    @Test
-    void deveRetornar400AoCriarComSemNome() throws Exception {
-        CourseInput courseInput = CourseFactory.criarCourseInputSemNome();
-        mockMvc.perform(MockMvcRequestBuilders.post(END_POINT_COURSE)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(courseInput))
-                        .accept(MediaType.APPLICATION_JSON)
-                )
-                .andExpect(status().isBadRequest());
-    }
+  @Test
+  void deveRetornar400AoCriarComSemNome() throws Exception {
+    CourseInput courseInput = CourseFactory.criarCourseInputSemNome();
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.post(END_POINT_COURSE)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(courseInput))
+                .accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().isBadRequest());
+  }
 
-    @Test
-    void deveRetornarExceptionAoConsultarCourseInexistente() throws Exception {
-        Mockito.when(courseService.getCourse(Mockito.anyLong())).thenThrow(new NotFoundException("", 1L));
-        mockMvc.perform(MockMvcRequestBuilders.get(END_POINT_COURSE_ID, -1)).andExpect(status().isNotFound());
-    }
+  @Test
+  void deveRetornarExceptionAoConsultarCourseInexistente() throws Exception {
+    Mockito.when(courseService.getCourse(Mockito.anyLong()))
+        .thenThrow(new NotFoundException("", 1L));
+    mockMvc
+        .perform(MockMvcRequestBuilders.get(END_POINT_COURSE_ID, -1))
+        .andExpect(status().isNotFound());
+  }
 
-    @Test
-    void deveRetornarExceptionBadRequestAoConsultarCourseInexistente() throws Exception {
-        Mockito.when(courseService.getCourse(Mockito.anyLong())).thenThrow(new NotFoundException("", 1L));
-        mockMvc.perform(MockMvcRequestBuilders.get(END_POINT_COURSE_ID, "COURSE")).andExpect(status().isBadRequest());
-    }
+  @Test
+  void deveRetornarExceptionBadRequestAoConsultarCourseInexistente() throws Exception {
+    Mockito.when(courseService.getCourse(Mockito.anyLong()))
+        .thenThrow(new NotFoundException("", 1L));
+    mockMvc
+        .perform(MockMvcRequestBuilders.get(END_POINT_COURSE_ID, "COURSE"))
+        .andExpect(status().isBadRequest());
+  }
 
-    @Test
-    void deveRetornarOKQuandoCourseExistente() throws Exception {
-        Mockito.when(courseService.getCourse(Mockito.anyLong())).thenReturn(CourseFactory.criarCourseValido());
-        mockMvc.perform(MockMvcRequestBuilders.get(END_POINT_COURSE_ID, 1)).andExpect(status().isOk());
-    }
+  @Test
+  void deveRetornarOKQuandoCourseExistente() throws Exception {
+    Mockito.when(courseService.getCourse(Mockito.anyLong()))
+        .thenReturn(CourseFactory.criarCourseValido());
+    mockMvc.perform(MockMvcRequestBuilders.get(END_POINT_COURSE_ID, 1)).andExpect(status().isOk());
+  }
 
-    @Test
-    void deveExcluirCourseComSucesso() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete(END_POINT_COURSE_ID, 1)).andExpect(status().isNoContent());
-    }
-
+  @Test
+  void deveExcluirCourseComSucesso() throws Exception {
+    mockMvc
+        .perform(MockMvcRequestBuilders.delete(END_POINT_COURSE_ID, 1))
+        .andExpect(status().isNoContent());
+  }
 }
