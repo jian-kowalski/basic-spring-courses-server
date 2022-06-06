@@ -1,8 +1,10 @@
 name: Deploy-Test
 on:
-  push:
+  workflow_run:
+    workflows: [ "quality-gate" ]
     branches: [ develop ]
-
+    types:
+      - completed
 jobs:
   build:
     needs: [ test, sonar ]
