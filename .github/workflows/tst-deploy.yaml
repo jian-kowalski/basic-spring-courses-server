@@ -1,11 +1,16 @@
 name: Deploy-Test
+
 on:
-  workflow_run:
-    workflows: [ "quality-gate" ]
+  push:
     branches: [ develop ]
-    types:
-      - completed
+
 jobs:
+  quality-gate:
+    name: quality gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./.github/workflows/quality-gate
+
   build:
     needs: [ test, sonar ]
     runs-on: ubuntu-latest
