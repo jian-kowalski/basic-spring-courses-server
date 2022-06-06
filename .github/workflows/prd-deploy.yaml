@@ -1,7 +1,11 @@
 name: Deploy-Prod
+
 on:
-  push:
+  workflow_run:
+    workflows: [ "quality-gate" ]
     branches: [ master ]
+    types:
+      - completed
 
 jobs:
   build:
