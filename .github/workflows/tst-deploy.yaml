@@ -9,7 +9,7 @@ jobs:
     name: quality gate
     runs-on: ubuntu-latest
     steps:
-      - uses: ./.github/workflows/quality-gate
+      - uses: ./.github/workflows/quality-gate.yml
 
   build:
     needs: [ quality-gate ]
