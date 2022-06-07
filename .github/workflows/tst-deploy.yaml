@@ -5,14 +5,7 @@ on:
     branches: [ develop ]
 
 jobs:
-  quality-gate:
-    name: quality gate
-    runs-on: ubuntu-latest
-    steps:
-      - uses: ./.github/workflows/quality-gate
-
   build:
-    needs: [ quality-gate ]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
