@@ -4,7 +4,7 @@ COPY . /src
 WORKDIR /src
 RUN mvn clean install  -DskipTests
 
-FROM openjdk:17-alpine
+FROM  openjdk:17-alpine
 RUN mkdir /app
 COPY --from=build /src/target/*.jar /app/app.jar
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]
