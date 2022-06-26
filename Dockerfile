@@ -1,4 +1,4 @@
-FROM maven:3.8.1-openjdk-17-slim as build
+FROM arm64v8/maven as build
 RUN mkdir /src
 COPY . /src
 WORKDIR /src
