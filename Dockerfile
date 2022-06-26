@@ -2,7 +2,7 @@ FROM arm64v8/maven as build
 RUN mkdir /src
 COPY . /src
 WORKDIR /src
-RUN mvn clean package -DspkipTests
+RUN mvn clean package -DskipTests
 #linux/amd64,
 
 FROM amazoncorretto:17.0.3
