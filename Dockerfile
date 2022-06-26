@@ -3,7 +3,6 @@ RUN mkdir /src
 COPY . /src
 WORKDIR /src
 RUN mvn clean package -DskipTests
-#linux/amd64,
 
 FROM amazoncorretto:17.0.3
 ENV SPRING_PROFILES=default
