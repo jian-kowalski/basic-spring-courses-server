@@ -11,7 +11,7 @@ services:
       - 3306:3306
 
   basic-spring:
-    image: basic-spring:0.1
+    image: jianrk/api-courses-server-test:0.0.13-b4968be
     ports:
       - 8080:8080
     depends_on:
