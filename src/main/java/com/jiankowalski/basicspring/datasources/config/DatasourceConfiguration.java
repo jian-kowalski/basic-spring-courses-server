@@ -14,9 +14,9 @@ public class DatasourceConfiguration {
   public DataSource dataSource() {
     return DataSourceBuilder.create()
         .driverClassName("com.mysql.cj.jdbc.Driver")
-        .url("jdbc:mysql://127.0.0.1:3306/courses")
+        .url("jdbc:mysql://mysql:3306/courses?createDatabaseIfNotExist=true")
         .username("courses")
-        .password("courses")
+        .password("root")
         .build();
   }
 }
