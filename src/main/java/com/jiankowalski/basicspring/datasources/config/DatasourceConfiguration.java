@@ -10,7 +10,6 @@ import javax.sql.DataSource;
 @Configuration
 @EnableJpaRepositories("com.jiankowalski.basicspring.datasources")
 public class DatasourceConfiguration {
-
   @Bean
   public DataSource dataSource() {
     return DataSourceBuilder.create()
