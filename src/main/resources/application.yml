@@ -10,3 +10,7 @@ server:
   servlet:
     context-path: "/api"
 
+springdoc:
+  show-actuator: true
+  swagger-ui:
+    path: /swagger-ui.html

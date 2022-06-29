@@ -6,8 +6,6 @@ info:
   contact:
     name: Basic API
     email: jian_kowalski@com.br
-servers:
-  - url: localhost:8080/v3/api-docs
 paths:
   /courses:
     get:
