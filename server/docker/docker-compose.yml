@@ -1,0 +1,38 @@
+version: "3.6"
+services:
+  mysql:
+    image: mysql/mysql-server:8.0.25
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: courses
+      MYSQL_USER: courses
+      MYSQL_PASSWORD: courses
+    ports:
+      - 3306:3306
+    networks:
+      - observability
+
+  basic-spring:
+    image: jianrk/basic-server
+    environment:
+      ELASTIC_APM_SERVICE_NAME: basic-server
+      ELASTIC_APM_APPLICATION_PACKAGES: com.jiankowalski.basicspring
+      ELASTIC_APM_SERVER_URLS: http://apm:8200
+      ELASTIC_APM_LOG_LEVEL: debug
+      ELASTIC_APM_ENVIRONMENT: sandbox
+      SPRING_PROFILES_ACTIVE: PRD
+    ports:
+      - 8080:8080
+    depends_on:
+      - mysql
+    networks:
+      - observability
+
+networks:
+  observability:
+    external: true
+
+#  basic-front:
+#    image: jianrk/basic-front
+#    ports:
+#      - 4200:4200do

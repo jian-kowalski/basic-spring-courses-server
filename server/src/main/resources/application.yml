@@ -1,0 +1,12 @@
+spring:
+  mvc:
+    throw-exception-if-no-handler-found: true
+  resources:
+    add-mappings: false
+  liquibase:
+    change-log: "db/changelog/db.changelog-master.xml"
+server:
+  port: 8080
+  servlet:
+    context-path: "/api"
+
